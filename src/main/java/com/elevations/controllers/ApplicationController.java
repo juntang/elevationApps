@@ -29,6 +29,8 @@ public class ApplicationController
         JsonParser parser = new JsonParser();
         JsonElement viewBounds = parser.parse( bounds );
 
+        System.out.println( bounds );
+
         return new LatLng( 1, 0 );
     }
 }

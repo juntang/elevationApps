@@ -11,7 +11,6 @@ public class Dao
 {
     private DataSource m_dataSource;
 
-    @Autowired
     public void setDataSource( DataSource dataSource )
     {
         m_dataSource = dataSource;
