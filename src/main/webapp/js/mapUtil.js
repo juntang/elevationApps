@@ -9,11 +9,11 @@ function placePoint( point, map )
 
 function convertBounds( bounds )
 {
+//    var southWest = [ bounds.getSouthWest().lat(), bounds.getSouthWest().lng() ];
+//    var northEast = [ bounds.getNorthEast().lat(), bounds.getNorthEast().lng() ];
+
     var southWest = { "lat" : bounds.getSouthWest().lat(), "lng" : bounds.getSouthWest().lng() };
     var northEast = { "lat" : bounds.getNorthEast().lat(), "lng" : bounds.getNorthEast().lng() };
-    var res = []
-    res[0] = southWest;
-    res[1] = northEast;
 
     return { "southWest" : southWest, "northEast" : northEast };
 }

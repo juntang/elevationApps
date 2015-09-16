@@ -1,9 +1,10 @@
 package com.elevations.models;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 public class LatLng
 {
-    private int id;
-
     private double m_lat;
     private double m_lng;
 
@@ -29,6 +30,20 @@ public class LatLng
         return m_lng;
     }
 
+    public static LatLng parseJson( JsonElement jsonLatLng )
+    {
+        JsonObject jsonLatLngObject = jsonLatLng.getAsJsonObject();
+
+        if ( !jsonLatLngObject.get( "lat" ).isJsonNull() && !jsonLatLngObject.get( "lng" ).isJsonNull() )
+        {
+            double lat = jsonLatLngObject.get( "lat" ).getAsDouble();
+            double lng = jsonLatLngObject.get( "lng" ).getAsDouble();
+            return new LatLng( lat, lng );
+        }
+
+        return null;
+    }
+
     @Override
     public boolean equals( Object o )
     {
@@ -37,7 +52,6 @@ public class LatLng
 
         LatLng latLng = ( LatLng ) o;
 
-        if ( id != latLng.id ) return false;
         if ( Double.compare( latLng.m_lat, m_lat ) != 0 ) return false;
         if ( Double.compare( latLng.m_lng, m_lng ) != 0 ) return false;
 
@@ -49,9 +63,8 @@ public class LatLng
     {
         int result;
         long temp;
-        result = id;
         temp = Double.doubleToLongBits( m_lat );
-        result = 31 * result + ( int ) ( temp ^ ( temp >>> 32 ) );
+        result = ( int ) ( temp ^ ( temp >>> 32 ) );
         temp = Double.doubleToLongBits( m_lng );
         result = 31 * result + ( int ) ( temp ^ ( temp >>> 32 ) );
         return result;
