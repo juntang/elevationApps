@@ -3,18 +3,18 @@ package com.elevations.models;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-public class LatLng
+public class LngLat
 {
     private double m_lat;
     private double m_lng;
 
-    public LatLng( LatLng latLng )
+    public LngLat( LngLat lngLat )
     {
-        m_lat = latLng.m_lat;
-        m_lng = latLng.m_lng;
+        m_lat = lngLat.m_lat;
+        m_lng = lngLat.m_lng;
     }
 
-    public LatLng( double lat, double lng )
+    public LngLat( double lng, double lat )
     {
         m_lat = lat;
         m_lng = lng;
@@ -30,7 +30,7 @@ public class LatLng
         return m_lng;
     }
 
-    public static LatLng parseJson( JsonElement jsonLatLng )
+    public static LngLat parseJson( JsonElement jsonLatLng )
     {
         JsonObject jsonLatLngObject = jsonLatLng.getAsJsonObject();
 
@@ -38,7 +38,7 @@ public class LatLng
         {
             double lat = jsonLatLngObject.get( "lat" ).getAsDouble();
             double lng = jsonLatLngObject.get( "lng" ).getAsDouble();
-            return new LatLng( lat, lng );
+            return new LngLat( lng, lat );
         }
 
         return null;
@@ -50,10 +50,10 @@ public class LatLng
         if ( this == o ) return true;
         if ( o == null || getClass() != o.getClass() ) return false;
 
-        LatLng latLng = ( LatLng ) o;
+        LngLat lngLat = ( LngLat ) o;
 
-        if ( Double.compare( latLng.m_lat, m_lat ) != 0 ) return false;
-        if ( Double.compare( latLng.m_lng, m_lng ) != 0 ) return false;
+        if ( Double.compare( lngLat.m_lat, m_lat ) != 0 ) return false;
+        if ( Double.compare( lngLat.m_lng, m_lng ) != 0 ) return false;
 
         return true;
     }

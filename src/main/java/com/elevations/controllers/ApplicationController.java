@@ -2,7 +2,7 @@ package com.elevations.controllers;
 
 import com.elevations.dao.RoadDAO;
 import com.elevations.models.Bounds;
-import com.elevations.models.LatLng;
+import com.elevations.models.LngLat;
 import com.elevations.models.Road;
 import com.google.gson.JsonParser;
 import org.skife.jdbi.v2.DBI;
@@ -14,19 +14,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.sql.DataSource;
-import java.util.Iterator;
 import java.util.List;
 
 @Controller
 public class ApplicationController
 {
-    private RoadDAO m_roadDao;
+    private RoadDAO m_roadDAO;
 
     @Autowired
     public void setDataSource( DataSource dataSource )
     {
-        DBI dbi = new DBI( dataSource );
-        m_roadDao = dbi.onDemand( RoadDAO.class );
+        m_roadDAO = new DBI( dataSource ).onDemand( RoadDAO.class );
     }
 
     @RequestMapping( value = "/elevations", method = RequestMethod.GET )
@@ -37,16 +35,16 @@ public class ApplicationController
 
     @RequestMapping( value = "/elevationData", method = RequestMethod.GET )
     @ResponseBody
-    public LatLng mapGet( @RequestParam( "bounds" ) String jsonBounds, @RequestParam( "diameter") String diameter )
+    public List<Road> mapGet( @RequestParam( "bounds" ) String jsonBounds, @RequestParam( "diameter") String diameter )
     {
         JsonParser parser = new JsonParser();
 
         Bounds bounds = Bounds.parseJson( parser.parse( jsonBounds ) );
 
-        List<Road> roads = m_roadDao.getRoadsInBounds( bounds );
+        List<Road> roads = m_roadDAO.getRoadsInBounds( bounds );
 
         System.out.println( jsonBounds );
 
-        return new LatLng( 1, 0 );
+        return roads;
     }
 }

@@ -1,27 +1,24 @@
 package com.elevations.models;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
-import java.text.ParseException;
 
 public class Bounds
 {
-    private LatLng m_southWest;
-    private LatLng m_northEast;
+    private LngLat m_southWest;
+    private LngLat m_northEast;
 
-    public Bounds( LatLng southWest, LatLng northEast )
+    public Bounds( LngLat southWest, LngLat northEast )
     {
         m_southWest = southWest;
         m_northEast = northEast;
     }
 
-    public LatLng getSouthWest()
+    public LngLat getSouthWest()
     {
         return m_southWest;
     }
 
-    public LatLng getNorthEast()
+    public LngLat getNorthEast()
     {
         return m_northEast;
     }
@@ -33,8 +30,8 @@ public class Bounds
 
         if ( jsonSouthWest != null && jsonNorthEast != null )
         {
-            LatLng southWest = LatLng.parseJson( jsonSouthWest );
-            LatLng northEast = LatLng.parseJson( jsonNorthEast );
+            LngLat southWest = LngLat.parseJson( jsonSouthWest );
+            LngLat northEast = LngLat.parseJson( jsonNorthEast );
             return new Bounds( southWest, northEast );
         }
 

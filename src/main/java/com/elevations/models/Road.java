@@ -8,20 +8,20 @@ public class Road
 
     private double m_gradient;
 
-    private Set<LatLng > m_points;
+    private Set<LngLat > m_points;
 
-    public Road( Set< LatLng > points )
+    public Road( Set< LngLat > points )
     {
         m_points = points;
     }
 
-    public Set<LatLng > getPoints()
+    public Set<LngLat > getPoints()
     {
         return m_points;
     }
 
-    public boolean isOnRoad( LatLng latLng )
+    public boolean isOnRoad( LngLat lngLat )
     {
-        return m_points.contains( latLng );
+        return m_points.contains( lngLat );
     }
 }

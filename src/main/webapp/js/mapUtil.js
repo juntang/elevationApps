@@ -9,9 +9,6 @@ function placePoint( point, map )
 
 function convertBounds( bounds )
 {
-//    var southWest = [ bounds.getSouthWest().lat(), bounds.getSouthWest().lng() ];
-//    var northEast = [ bounds.getNorthEast().lat(), bounds.getNorthEast().lng() ];
-
     var southWest = { "lat" : bounds.getSouthWest().lat(), "lng" : bounds.getSouthWest().lng() };
     var northEast = { "lat" : bounds.getNorthEast().lat(), "lng" : bounds.getNorthEast().lng() };
 
@@ -28,7 +25,7 @@ function sendLongLat( map )
         data : { bounds : JSON.stringify( convertedBounds ), diameter : computeBoundsDistance( map ) },
         success : function( data )
         {
-            placePoint( data, map );
+            drawRoads( data, map );
         }
     });
 }
@@ -43,4 +40,22 @@ function computeBoundsDistance( map )
 {
     var bounds = map.getBounds();
     return google.maps.geometry.spherical.computeDistanceBetween ( bounds.getSouthWest(), bounds.getNorthEast() )
+}
+
+function drawRoad( road, map )
+{
+    var points = road.points;
+    var line = []
+    for ( var index in points )
+    {
+        placePoint( points[index], map )
+    }
+}
+
+function drawRoads( roads, map )
+{
+    for ( var index in roads )
+    {
+        drawRoad( roads[index], map )
+    }
 }
