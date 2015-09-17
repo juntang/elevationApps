@@ -43,8 +43,6 @@ public class ApplicationController
 
         List<Road> roads = m_roadDAO.getRoadsInBounds( bounds );
 
-        System.out.println( jsonBounds );
-
         return roads;
     }
 }

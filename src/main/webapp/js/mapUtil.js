@@ -1,9 +1,9 @@
-function placePoint( point, map )
+function placePoint( point, map, index )
 {
     new google.maps.Marker({
         position: { lat : point.lat, lng : point.lng },
         map: map,
-        title: "hello"
+        title: index + "{" + point.lng + "," + point.lat + "}"
     });
 }
 
@@ -48,8 +48,18 @@ function drawRoad( road, map )
     var line = []
     for ( var index in points )
     {
-        placePoint( points[index], map )
+        line.push( { lat : points[index].lat, lng : points[index].lng } )
     }
+
+    var linePath = new google.maps.Polyline({
+        path: line,
+        geodesic: false,
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 3
+    });
+
+    linePath.setMap(map);
 }
 
 function drawRoads( roads, map )

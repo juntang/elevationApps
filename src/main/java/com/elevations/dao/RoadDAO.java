@@ -20,7 +20,7 @@ public abstract class RoadDAO
 
     @SqlQuery(
             "SELECT ST_asGeoJson( way ) AS roads " +
-                    "FROM planet_osm_roads " +
+                    "FROM planet_osm_line " +
                     "WHERE ST_Contains( " +
                     "ST_MakeEnvelope( :lng1, :lat1, :lng2, :lat2, 4326 ), " +
                     "way )" )

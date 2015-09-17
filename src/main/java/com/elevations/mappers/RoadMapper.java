@@ -10,7 +10,9 @@ import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class RoadMapper implements ResultSetMapper<Road >
@@ -24,7 +26,7 @@ public class RoadMapper implements ResultSetMapper<Road >
         JsonParser parser = new JsonParser();
         JsonElement viewBounds = parser.parse( resultSet.getString( COLUMN_NAME ) );
         JsonArray coordinates = viewBounds.getAsJsonObject().getAsJsonArray( COORDINATES );
-        Set<LngLat > points = new HashSet<LngLat >();
+        List<LngLat > points = new ArrayList<LngLat >();
         for ( int j=0; j<coordinates.size(); j++ )
         {
             JsonArray coord = coordinates.get( j ).getAsJsonArray();
