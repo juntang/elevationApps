@@ -1,12 +1,3 @@
-function placePoint( point, map, index )
-{
-    new google.maps.Marker({
-        position: { lat : point.lat, lng : point.lng },
-        map: map,
-        title: index + "{" + point.lng + "," + point.lat + "}"
-    });
-}
-
 function convertBounds( bounds )
 {
     var southWest = { "lat" : bounds.getSouthWest().lat(), "lng" : bounds.getSouthWest().lng() };
@@ -42,30 +33,58 @@ function computeBoundsDistance( map )
     return google.maps.geometry.spherical.computeDistanceBetween ( bounds.getSouthWest(), bounds.getNorthEast() )
 }
 
-function drawRoad( road, map )
+function drawSegments( road, map, roadIndex )
 {
-    var points = road.points;
-    var line = []
-    for ( var index in points )
+    var segments = road.segments
+    for ( var index in segments )
     {
-        line.push( { lat : points[index].lat, lng : points[index].lng } )
+        var segment = segments[index];
+        var start = segment.start
+        var end = segment.end
+        var line = [
+            { lat : start.lat, lng : start.lng },
+            { lat : end.lat, lng : end.lng }
+        ]
+
+        var gradient = segment.gradient
+
+        var details = "End: " + "{" + end.lng + "," + end.lat + "}" + "\n" +
+                        "Road: " + roadIndex + "\n" +
+                        "Segment: " + index + "\n" +
+                        "Start Elevation: " + start.elevation + "\n" +
+                        "End Elevation: " + end.elevation + "\n" +
+                        "Gradient: " + gradient + "\n" +
+                        "Distance: " + segment.distance;
+
+//        drawPoint( start, map, details )
+
+        var color = gradient > 0 ? '#FF0000' : '#0000FF'
+
+        var linePath = new google.maps.Polyline({
+            path: line,
+            geodesic: true,
+            strokeColor: color,
+            strokeOpacity: 2.5 * segment.gradient,
+            strokeWeight: 3
+        });
+
+        linePath.setMap(map);
     }
-
-    var linePath = new google.maps.Polyline({
-        path: line,
-        geodesic: false,
-        strokeColor: '#FF0000',
-        strokeOpacity: 1.0,
-        strokeWeight: 3
-    });
-
-    linePath.setMap(map);
 }
 
 function drawRoads( roads, map )
 {
     for ( var index in roads )
     {
-        drawRoad( roads[index], map )
+        drawSegments( roads[index], map, index )
     }
+}
+
+function drawPoint( point, map, description )
+{
+    new google.maps.Marker({
+        position: { lat : point.lat, lng : point.lng },
+        map: map,
+        title: "{" + point.lng + "," + point.lat + "}" + "\n" + description
+    });
 }

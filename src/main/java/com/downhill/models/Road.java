@@ -1,29 +1,38 @@
-package com.elevations.models;
+package com.downhill.models;
 
 import java.util.Iterator;
 import java.util.List;
 
 public class Road
 {
-    private Long id;
+    private List<LngLat> m_points;
 
-    private double m_gradient;
+    private List<RoadSegment> m_segments;
 
-    private List<LngLat > m_points;
-
-    public Road( List< LngLat > points )
+    public Road( List<LngLat> points, List<RoadSegment> segments )
     {
         m_points = points;
+        m_segments = segments;
     }
 
-    public List<LngLat > getPoints()
+    public List<LngLat> getPoints()
     {
         return m_points;
+    }
+
+    public List<RoadSegment> getSegments()
+    {
+        return m_segments;
     }
 
     public boolean isOnRoad( LngLat lngLat )
     {
         return m_points.contains( lngLat );
+    }
+
+    public boolean isOnRoad( RoadSegment segment )
+    {
+        return m_segments.contains( segment );
     }
 
     public String toString()

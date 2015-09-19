@@ -1,7 +1,8 @@
-package com.elevations.mappers;
+package com.downhill.mappers;
 
-import com.elevations.models.LngLat;
-import com.elevations.models.Road;
+import com.downhill.models.LngLat;
+import com.downhill.models.Road;
+import com.downhill.models.RoadSegment;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -11,11 +12,9 @@ import org.skife.jdbi.v2.tweak.ResultSetMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-public class RoadMapper implements ResultSetMapper<Road >
+public class RoadMapper implements ResultSetMapper<Road>
 {
     private static String COLUMN_NAME = "roads";
     private static String COORDINATES = "coordinates";
@@ -26,12 +25,21 @@ public class RoadMapper implements ResultSetMapper<Road >
         JsonParser parser = new JsonParser();
         JsonElement viewBounds = parser.parse( resultSet.getString( COLUMN_NAME ) );
         JsonArray coordinates = viewBounds.getAsJsonObject().getAsJsonArray( COORDINATES );
-        List<LngLat > points = new ArrayList<LngLat >();
-        for ( int j=0; j<coordinates.size(); j++ )
+        List<LngLat> points = new ArrayList<LngLat>();
+        LngLat previousPoint = null;
+        List<RoadSegment> segments = new ArrayList<>();
+        for ( int j = 0; j < coordinates.size(); j++ )
         {
             JsonArray coord = coordinates.get( j ).getAsJsonArray();
-            points.add( new LngLat( coord.get( 0 ).getAsDouble(), coord.get( 1 ).getAsDouble() ) );
+            LngLat point = new LngLat( coord.get( 0 ).getAsDouble(), coord.get( 1 ).getAsDouble() );
+            points.add( point );
+            if ( previousPoint != null )
+            {
+                RoadSegment segment = new RoadSegment( previousPoint, point );
+                segments.add( segment );
+            }
+            previousPoint = point;
         }
-        return new Road( points );
+        return new Road( points, segments );
     }
 }

@@ -1,4 +1,4 @@
-package com.elevations.models;
+package com.downhill.models;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -7,6 +7,7 @@ public class LngLat
 {
     private double m_lat;
     private double m_lng;
+    private double m_elevation = Double.NaN;
 
     public LngLat( LngLat lngLat )
     {
@@ -28,6 +29,16 @@ public class LngLat
     public double getLng()
     {
         return m_lng;
+    }
+
+    public double getElevation()
+    {
+        return m_elevation;
+    }
+
+    public void setElevation( double elevation )
+    {
+        m_elevation = elevation;
     }
 
     public static LngLat parseJson( JsonElement jsonLatLng )

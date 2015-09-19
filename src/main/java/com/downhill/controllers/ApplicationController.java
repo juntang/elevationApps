@@ -1,9 +1,10 @@
-package com.elevations.controllers;
+package com.downhill.controllers;
 
-import com.elevations.dao.RoadDAO;
-import com.elevations.models.Bounds;
-import com.elevations.models.LngLat;
-import com.elevations.models.Road;
+import com.downhill.api.*;
+import com.downhill.api.elevations.BruteForceHeuristic;
+import com.downhill.api.elevations.SelectionHeuristic;
+import com.downhill.models.Bounds;
+import com.downhill.models.Road;
 import com.google.gson.JsonParser;
 import org.skife.jdbi.v2.DBI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,12 @@ import java.util.List;
 @Controller
 public class ApplicationController
 {
-    private RoadDAO m_roadDAO;
+    private RoadAPI m_roadAPI;
 
     @Autowired
     public void setDataSource( DataSource dataSource )
     {
-        m_roadDAO = new DBI( dataSource ).onDemand( RoadDAO.class );
+        m_roadAPI = new DBI( dataSource ).onDemand( RoadAPI.class );
     }
 
     @RequestMapping( value = "/elevations", method = RequestMethod.GET )
@@ -41,7 +42,18 @@ public class ApplicationController
 
         Bounds bounds = Bounds.parseJson( parser.parse( jsonBounds ) );
 
-        List<Road> roads = m_roadDAO.getRoadsInBounds( bounds );
+        List<Road> roads = m_roadAPI.getRoadsInBounds( bounds );
+
+        ElevationAPI elevationAPI = new SRTMElevationAPI();
+        GradientAPI gradientAPI = new SimpleGradientAPI( elevationAPI );
+        SelectionHeuristic heuristic = new BruteForceHeuristic();
+
+        for ( Road road : roads )
+        {
+            gradientAPI.setGradients( road, heuristic );
+        }
+
+        System.out.println( roads.toString() );
 
         return roads;
     }

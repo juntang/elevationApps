@@ -1,4 +1,4 @@
-package com.elevations.beans;
+package com.downhill.beans;
 
 import org.postgresql.jdbc2.optional.SimpleDataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;

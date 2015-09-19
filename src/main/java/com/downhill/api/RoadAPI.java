@@ -1,9 +1,9 @@
-package com.elevations.dao;
+package com.downhill.api;
 
-import com.elevations.models.Bounds;
-import com.elevations.models.LngLat;
-import com.elevations.models.Road;
-import com.elevations.mappers.RoadMapper;
+import com.downhill.models.Bounds;
+import com.downhill.models.LngLat;
+import com.downhill.models.Road;
+import com.downhill.mappers.RoadMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @RegisterMapper( RoadMapper.class )
-public abstract class RoadDAO
+public abstract class RoadAPI
 {
     @SqlQuery("SELECT * FROM planet_osm_roads")
     public abstract Iterator<Road> list();

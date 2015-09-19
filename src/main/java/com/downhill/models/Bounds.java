@@ -1,4 +1,4 @@
-package com.elevations.models;
+package com.downhill.models;
 
 import com.google.gson.JsonElement;
 
