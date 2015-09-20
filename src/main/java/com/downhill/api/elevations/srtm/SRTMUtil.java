@@ -66,12 +66,12 @@ public class SRTMUtil
      */
     public static String getSRTMFileName( double lng, double lat )
     {
-        int nlat = Math.abs( ( int ) Math.floor( lat ) );
-        int nlon = Math.abs( ( int ) Math.floor( lng ) );
+        int nLat = Math.abs( ( int ) Math.floor( lat ) );
+        int nLng = Math.abs( ( int ) Math.floor( lng ) );
 
         NumberFormat nf = NumberFormat.getInstance() ;
         String NS, WE;
-        String f_nlat, f_nlon;
+        String fLat, fLng;
 
         if ( lat > 0 )
         {
@@ -91,10 +91,10 @@ public class SRTMUtil
         }
 
         nf.setMinimumIntegerDigits( 2 );
-        f_nlat = nf.format( nlat );
+        fLat = nf.format( nLat );
         nf.setMinimumIntegerDigits( 3 );
-        f_nlon = nf.format( nlon );
+        fLng = nf.format( nLng );
 
-        return NS + f_nlat + WE + f_nlon;
+        return NS + fLat + WE + fLng;
     }
 }

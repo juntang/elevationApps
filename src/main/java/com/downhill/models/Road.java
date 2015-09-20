@@ -9,6 +9,8 @@ public class Road
 
     private List<RoadSegment> m_segments;
 
+    private double m_distance;
+
     public Road( List<LngLat> points, List<RoadSegment> segments )
     {
         m_points = points;

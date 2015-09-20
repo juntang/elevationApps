@@ -58,13 +58,13 @@ function drawSegments( road, map, roadIndex )
 
 //        drawPoint( start, map, details )
 
-        var color = gradient > 0 ? '#FF0000' : '#0000FF'
+        var color = gradient > 0 ? '#CC0000' : '#0000FF'
 
         var linePath = new google.maps.Polyline({
             path: line,
             geodesic: true,
             strokeColor: color,
-            strokeOpacity: 2.5 * segment.gradient,
+            strokeOpacity: 3.5 * segment.gradient,
             strokeWeight: 3
         });
 

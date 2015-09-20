@@ -4,9 +4,9 @@ import com.downhill.api.elevations.SelectionHeuristic;
 import com.downhill.models.Road;
 import com.downhill.models.RoadSegment;
 
+import java.util.List;
+
 public interface GradientAPI
 {
-    public void setGradient( RoadSegment segment );
-
-    public void setGradients( Road road, SelectionHeuristic heuristic );
+    public double getGradient( RoadSegment segment );
 }

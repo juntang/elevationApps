@@ -6,6 +6,8 @@ import com.downhill.api.elevations.SelectionHeuristic;
 import com.downhill.models.Bounds;
 import com.downhill.models.Road;
 import com.google.gson.JsonParser;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.skife.jdbi.v2.DBI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,12 +17,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class ApplicationController
 {
     private RoadAPI m_roadAPI;
+    private Logger m_logger = Logger.getLogger( ApplicationController.class );
 
     @Autowired
     public void setDataSource( DataSource dataSource )
@@ -42,18 +46,15 @@ public class ApplicationController
 
         Bounds bounds = Bounds.parseJson( parser.parse( jsonBounds ) );
 
-        List<Road> roads = m_roadAPI.getRoadsInBounds( bounds );
+        List<Road> roads = new ArrayList<>();
 
-        ElevationAPI elevationAPI = new SRTMElevationAPI();
-        GradientAPI gradientAPI = new SimpleGradientAPI( elevationAPI );
-        SelectionHeuristic heuristic = new BruteForceHeuristic();
-
-        for ( Road road : roads )
+        //TODO Need to prevent HUGE QUERIES!
+        if ( Double.parseDouble( diameter ) < 10000 )
         {
-            gradientAPI.setGradients( road, heuristic );
+            roads.addAll( m_roadAPI.getRoadsInBounds( bounds ) );
         }
 
-        System.out.println( roads.toString() );
+        m_logger.log( Level.INFO, roads.size() );
 
         return roads;
     }

@@ -1,8 +1,18 @@
-package com.downhill.util;
+package com.downhill.api;
 
-public class LngLatUtil
+
+import com.downhill.models.LngLat;
+
+public class HaversineDistanceAPI implements DistanceAPI
 {
-    public static double distance( double lat1, double lat2, double lon1, double lon2, double el1, double el2 )
+    @Override
+    public double getDistance( LngLat lngLat1, LngLat lngLat2 )
+    {
+        return distance( lngLat1.getLat(), lngLat2.getLat(), lngLat1.getLng(), lngLat2.getLng(), lngLat1.getElevation(),
+                lngLat2.getElevation() );
+    }
+
+    private static double distance( double lat1, double lat2, double lon1, double lon2, double el1, double el2 )
     {
 
         final int R = 6371; // Radius of the earth
