@@ -1,12 +1,10 @@
 package com.downhill.api;
 
-import com.downhill.models.Bounds;
+
 import com.downhill.models.LngLat;
 import com.downhill.models.Road;
 import com.downhill.models.RoadSegment;
 import com.google.gson.JsonArray;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
