@@ -16,6 +16,7 @@ function sendLongLat( map )
         data : { bounds : JSON.stringify( convertedBounds ), diameter : computeBoundsDistance( map ) },
         success : function( data )
         {
+            clearLines();
             drawRoads( data, map );
         }
     });
@@ -31,6 +32,17 @@ function computeBoundsDistance( map )
 {
     var bounds = map.getBounds();
     return google.maps.geometry.spherical.computeDistanceBetween ( bounds.getSouthWest(), bounds.getNorthEast() )
+}
+
+var lines = []
+
+function clearLines()
+{
+    lines.forEach( function ( line )
+    {
+        line.setMap( null )
+    })
+    lines.length = 0
 }
 
 function drawSegments( road, map, roadIndex )
@@ -56,19 +68,18 @@ function drawSegments( road, map, roadIndex )
                         "Gradient: " + gradient + "\n" +
                         "Distance: " + segment.distance;
 
-//        drawPoint( start, map, details )
-
         var color = gradient > 0 ? '#CC0000' : '#0000FF'
 
         var linePath = new google.maps.Polyline({
             path: line,
             geodesic: true,
             strokeColor: color,
-            strokeOpacity: 3.5 * segment.gradient,
+            strokeOpacity: 3 * Math.abs( segment.gradient ),
             strokeWeight: 3
         });
 
-        linePath.setMap(map);
+        lines.push( linePath );
+        linePath.setMap( map );
     }
 }
 

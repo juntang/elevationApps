@@ -12,6 +12,7 @@ import java.util.zip.ZipFile;
 public class SRTMHelper
 {
     private File localDir;
+    //TODO use a proper caching library rather then soft referenced data structures.
     private Map<File, SoftReference<BufferedInputStream>> srtmMap;
     private Logger m_logger = Logger.getLogger( SRTMHelper.class );
 
@@ -83,6 +84,7 @@ public class SRTMHelper
         return ( short ) ( ( ch1 << 8 ) + ( ch2 ) );
     }
 
+    //TODO store in db? read times are horrendously slow, problem only lies in initial query until cache kicks in
     private double getValues( File file, int rowmin, int colmin ) throws IOException
     {
         file = new File( localDir, file.getName() );

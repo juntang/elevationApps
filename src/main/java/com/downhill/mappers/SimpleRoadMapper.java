@@ -1,30 +1,30 @@
-package com.downhill.api;
+package com.downhill.mappers;
 
-
+import com.downhill.api.*;
 import com.downhill.models.LngLat;
-import com.downhill.models.Road;
+import com.downhill.models.Road;;
 import com.downhill.models.RoadSegment;
 import com.google.gson.JsonArray;
-
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class APIController
+public class SimpleRoadMapper extends AbstractRoadMapper
 {
-    private ElevationAPI m_elevationAPI = new SRTMElevationAPI();
-    private GradientAPI m_gradientAPI = new SimpleGradientAPI();
-    private DistanceAPI m_distanceAPI = new HaversineDistanceAPI();
+    protected void setAPIs()
+    {
+        setAPIs( new SRTMElevationAPI(), new SimpleGradientAPI(), new HaversineDistanceAPI() );
+    }
 
-
-
-    public Road buildRoad( JsonArray coordinates )
+    @Override
+    protected Road buildRoad( JsonArray coordinates )
     {
         List<LngLat> points = new ArrayList<LngLat>();
         List<RoadSegment> segments = new ArrayList<RoadSegment>();
 
+        double distance = 0;
+
         LngLat previousPoint = null;
-        for ( int i=0; i<coordinates.size(); i++ )
+        for ( int i = 0; i < coordinates.size(); i++ )
         {
             JsonArray coordinate = coordinates.get( i ).getAsJsonArray();
             LngLat currentPoint = buildPoint( coordinate.get( 0 ).getAsDouble(), coordinate.get( 1 ).getAsDouble() );
@@ -34,15 +34,22 @@ public class APIController
             {
                 RoadSegment segment = buildSegment( previousPoint, currentPoint );
                 segments.add( segment );
+
+                distance += segment.getDistance();
             }
 
             previousPoint = currentPoint;
         }
 
+        if ( distance < 500 )
+        {
+            return new Road( new ArrayList<>(), new ArrayList<>() );
+        }
+
         return new Road( points, segments );
     }
 
-    private LngLat buildPoint( double lng, double lat )
+    protected LngLat buildPoint( double lng, double lat )
     {
         LngLat point = new LngLat( lng, lat );
 
@@ -52,7 +59,7 @@ public class APIController
         return point;
     }
 
-    private RoadSegment buildSegment( LngLat start, LngLat end )
+    protected RoadSegment buildSegment( LngLat start, LngLat end )
     {
         RoadSegment segment = new RoadSegment( start, end );
 
@@ -64,5 +71,4 @@ public class APIController
 
         return segment;
     }
-
 }

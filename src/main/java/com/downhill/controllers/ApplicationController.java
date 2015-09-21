@@ -48,8 +48,8 @@ public class ApplicationController
 
         List<Road> roads = new ArrayList<>();
 
-        //TODO Need to prevent HUGE QUERIES!
-        if ( Double.parseDouble( diameter ) < 10000 )
+        //TODO Need to prevent HUGE QUERIES on server side rather then client side!
+        if ( Double.parseDouble( diameter ) < 16000 )
         {
             roads.addAll( m_roadAPI.getRoadsInBounds( bounds ) );
         }
